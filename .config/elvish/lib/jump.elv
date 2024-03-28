@@ -22,6 +22,7 @@ fn safe_fzf {
 #   alt-o goes back on the jumplist stack (does not pop ; non destructive to jumplist)
 #   Shift-alt-o goes back on the jumplist stack (destructive)
 #   alt-i goes forward on the jumplist stack
+#   alt-e brings up fzf to select a jump point to echo into the shell prompt
 #   alt-j  brings up a fuzzy picker for all items in jumplist
 #   Shift-alt-j adds the current directory explicitly to the jump list
 #   Shift-alt-ctrl-j removes the current directory from the explicit jump list
@@ -86,9 +87,9 @@ fn jump_pick {
   var choice = (each {
     |jumppoint|
     echo $jumppoint
-  } [$@jump_stack $@jump_saved] | safe_fzf -i)
+  } [$@jump_stack $@jump_saved] | safe_fzf --header 'Jumplist' -i)
 
-  if (==s choice '.') {
+  if (==s $choice '.') {
     return
   }
 
@@ -98,6 +99,21 @@ fn jump_pick {
   }
   set jump_stack = [$@jump_stack (pwd)]
   set jump_position = (+ $jump_position 1)
+}
+
+# Opens a fuzzy finder on jump stack + explicitly marked jump points
+# echos the jump point path to the cursor position in the shell prompt
+fn jump_echo {
+  var choice = (each {
+    |jumppoint|
+    echo $jumppoint
+  } [$@jump_stack $@jump_saved] | safe_fzf --header 'Jumplist (echo)' -i)
+
+  if (==s $choice '.') {
+    return
+  }
+
+  edit:insert-at-dot $choice
 }
 
 # Marks the cwd explicitly as a jump point (if it already is marked, this is a no-op)
@@ -119,6 +135,7 @@ fn jump_unmark {
 set edit:insert:binding[Alt-o] = $jump_back~
 set edit:insert:binding[Alt-O] = $jump_pop~
 set edit:insert:binding[Alt-i] = $jump_forward~
+set edit:insert:binding[Alt-e] = $jump_echo~
 set edit:insert:binding[Alt-j] = $jump_pick~
 set edit:insert:binding[Alt-J] = $jump_mark~
 set edit:insert:binding[Alt-Ctrl-J] = $jump_unmark~
@@ -231,7 +248,7 @@ if (has-external fzf) {
     var selection = (each {
         |item|
         echo $item | re:replace "['\\[\\]\\n]" '' (slurp) | echo (all)
-      } $bookmarks | safe_fzf -i -n 1,3.. | to-lines | awk '{print $1}')
+      } $bookmarks | safe_fzf --header Bookmarks -i -n 1,3.. | to-lines | awk '{print $1}')
 
     if (!=s $selection '.') {
       each {
@@ -247,7 +264,7 @@ if (has-external fzf) {
     var selection = (each {
         |item|
         echo $item | re:replace "['\\[\\]\\n]" '' (slurp) | echo (all)
-      } $bookmarks | safe_fzf -i -n 1,3.. | to-lines | awk '{print $1}')
+      } $bookmarks | safe_fzf --header 'Bookmarks (echo)' -i -n 1,3.. | to-lines | awk '{print $1}')
 
     if (!=s $selection '.') {
       each {
