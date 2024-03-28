@@ -45,6 +45,9 @@ if (has-external helix) {
 }
 
 set-env PAGER "less"
+if (has-external bat) {
+  set-env PAGER "bat"
+}
 
 if (not (has-env XDG_CONFIG_HOME)) {
   set-env XDG_CONFIG_HOME (path:join $E:HOME .config)

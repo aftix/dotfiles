@@ -9,9 +9,11 @@ use os
 # Utility function for allowing canceling of fzf
 fn safe_fzf {
   |@all|
+
+  defer $edit:clear~
   
   sort | uniq | try { 
-    fzf $@all 2> $os:dev-tty
+    fzf --border $@all 2> $os:dev-tty
   } catch e {
     echo '.'
   } | put (all)
@@ -87,7 +89,7 @@ fn jump_pick {
   var choice = (each {
     |jumppoint|
     echo $jumppoint
-  } [$@jump_stack $@jump_saved] | safe_fzf --header 'Jumplist' -i)
+  } [$@jump_stack $@jump_saved] | safe_fzf --tac --header 'Jumplist' -i)
 
   if (==s $choice '.') {
     return
@@ -97,6 +99,7 @@ fn jump_pick {
   if (< $jump_position (count $jump_stack)) {
     set jump_stack = $jump_stack[0..(+ $jump_position 1)]
   }
+  cd $choice
   set jump_stack = [$@jump_stack (pwd)]
   set jump_position = (+ $jump_position 1)
 }
@@ -107,7 +110,7 @@ fn jump_echo {
   var choice = (each {
     |jumppoint|
     echo $jumppoint
-  } [$@jump_stack $@jump_saved] | safe_fzf --header 'Jumplist (echo)' -i)
+  } [$@jump_stack $@jump_saved] | safe_fzf --tac --header 'Jumplist (echo)' -i)
 
   if (==s $choice '.') {
     return

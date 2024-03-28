@@ -3,9 +3,6 @@ backend = "gpg"
 name = "aftix"
 email = "aftix@aftix.xyz"
 
-[ui]
-pager = "bat"
-
 [ui.diff]
 tool = ["kitty", "+kitten", "diff", "$left", "$right"]
 
