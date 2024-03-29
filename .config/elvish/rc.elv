@@ -345,6 +345,7 @@ set mamba:root = (path:join $E:HOME .conda)
 use completions/molecule
 use completions/crev
 use jump
+use iterm2
 
 fn add_bookmark {|@args| jump:add_bookmark $@args }
 fn remove_bookmark {|@args| jump:remove_bookmark $@args }
@@ -352,3 +353,4 @@ fn jump {|@args| jump:jump $@args }
 fn cd {|@args| jump:jump $@args }
 
 eval (starship init elvish)
+iterm2:init
