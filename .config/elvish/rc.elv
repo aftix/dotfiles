@@ -46,8 +46,11 @@ if (has-external helix) {
 
 set-env PAGER "less"
 if (has-external bat) {
-  set-env PAGER "bat"
+  set-env PAGER "bat --chop-long-lines"
+  set-env MANPAGER "bat --chop-long-lines -p"
 }
+fn bat {|@all| e:bat --chop-long-lines $@all }
+fn batp {|@all| e:bat --chop-long-lines -p $@all }
 
 if (not (has-env XDG_CONFIG_HOME)) {
   set-env XDG_CONFIG_HOME (path:join $E:HOME .config)
