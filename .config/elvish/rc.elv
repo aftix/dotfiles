@@ -211,9 +211,12 @@ fn exa {|@a| e:exa --icons $@a }
 fn exat {|@a| e:exa --tree -lbh $@a }
 
 fn tract {|@a| transmission-remote -F '~l:done' $@a }
+fn tract_complete {|@a| $edit:completion:arg-completer[transmission-remote] transmission-remote -F '~l:done' $@a }
+set edit:completion:arg-completer[tract] = $tract_complete~
 
 # Shortening names
 fn trem {|@a| transmission-remote $@a}
+set edit:completion:arg-completer[trem] = $edit:completion:arg-completer[transmission-remote]
 
 set edit:completion:arg-completer[P] = $edit:completion:arg-completer[pacman]
 set edit:completion:arg-completer[t] = $edit:completion:arg-completer[pacman]
