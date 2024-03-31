@@ -1,5 +1,7 @@
 use re
+use str
 use path
+use os
 
 # PATH
 fn add_to_path {
@@ -116,6 +118,23 @@ fn upgrade {
 }
 
 # ALIASES
+
+if (and (os:exists ~/.config/aria2/aria2d.env) (os:is-regular ~/.config/aria2/aria2d.env) (not (os:is-dir ~/.config/aria2/aria2d.env))) {
+  from-lines < ~/.config/aria2/aria2d.env | peach {
+    |line|
+
+    if ?(grep -q '^#' (slurp < $line)) {
+      break
+    }
+
+    var fields = [(str:split "=" $line)]
+    if (== (count $fields) 2) {
+      echo "set-env "$fields[0]" "$fields[1] | eval (slurp)
+    }
+  }
+}
+
+fn aria2p  {|@a| e:aria2p --secret=$E:ARIA2_RPC_TOKEN $@a }
 
 fn icat {|@rest| e:kitty +kitten icat $@rest}
 fn kdiff {|@rest| e:kitty +kitten diff $@rest}
