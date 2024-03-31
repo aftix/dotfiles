@@ -233,6 +233,8 @@ fn tract {|@a| transmission-remote -F '~l:done' $@a }
 fn tract_complete {|@a| $edit:completion:arg-completer[transmission-remote] transmission-remote -F '~l:done' $@a }
 set edit:completion:arg-completer[tract] = $tract_complete~
 
+set edit:completion:arg-completer[doas] = $edit:completion:arg-completer[sudo]
+
 # Shortening names
 fn trem {|@a| transmission-remote $@a}
 set edit:completion:arg-completer[trem] = $edit:completion:arg-completer[transmission-remote]
