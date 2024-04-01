@@ -53,6 +53,7 @@ if (has-external bat) {
 }
 fn bat {|@all| e:bat --chop-long-lines $@all }
 fn batp {|@all| e:bat --chop-long-lines -p $@all }
+set edit:completion:arg-completer[batp] = $edit:completion:arg-completer[bat]
 
 if (not (has-env XDG_CONFIG_HOME)) {
   set-env XDG_CONFIG_HOME (path:join $E:HOME .config)
