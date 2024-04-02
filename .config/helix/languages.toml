@@ -80,7 +80,7 @@ slint-lsp = { command = "slint-lsp", args = [] }
 solargraph = { command = "solargraph", args = ["stdio"] }
 solc = { command = "solc", args = ["--lsp"] }
 sourcekit-lsp = { command = "sourcekit-lsp" }
-svlangserver = { command = "svlangserver", args = [] }
+svls = { command = "svls", args = [] }
 swipl = { command = "swipl", args = [ "-g", "use_module(library(lsp_server))", "-g", "lsp_server:main", "-t", "halt", "--", "stdio" ] }
 tailwindcss-ls = { command = "tailwindcss-language-server", args = ["--stdio"] }
 taplo = { command = "taplo", args = ["lsp", "stdio"] }
@@ -2113,7 +2113,7 @@ scope = "source.verilog"
 file-types = ["v", "vh", "sv", "svh"]
 comment-token = "//"
 block-comment-tokens = { start = "/*", end = "*/" }
-language-servers = [ "svlangserver" ]
+language-servers = [ "svls" ]
 indent = { tab-width = 2, unit = "  " }
 injection-regex = "verilog"
 
