@@ -94,8 +94,8 @@ fn upgrade {
     set su = (external doas)
   }
 
-  if (has-external trizen) {
-    trizen -Syu
+  if (has-external paru) {
+    paru -Syu
   } elif (has-external pacman)  {
     $su pacman -Syu
   }
@@ -182,7 +182,7 @@ fn diff {|@a| e:diff --color=auto $@a}
 set edit:completion:arg-completer[sysu] = $edit:completion:arg-completer[systemctl]
 fn sysu {|@a| systemctl --user $@a }
 
-fn TT {|@a| trizen -Syu $@a }
+fn PU {|@a| e:paru -Syu $@a }
 
 set edit:completion:arg-completer[k] = $edit:completion:arg-completer[make]
 set edit:completion:arg-completer[kd] = $edit:completion:arg-completer[make]
@@ -240,9 +240,7 @@ fn trem {|@a| transmission-remote $@a}
 set edit:completion:arg-completer[trem] = $edit:completion:arg-completer[transmission-remote]
 
 set edit:completion:arg-completer[P] = $edit:completion:arg-completer[pacman]
-set edit:completion:arg-completer[t] = $edit:completion:arg-completer[pacman]
 fn P {|@a| pacman $@a}
-fn t {|@a| trizen $@a}
 
 set edit:completion:arg-completer[sys] = $edit:completion:arg-completer[systemctl]
 fn sys {|@a| systemctl $@a}
